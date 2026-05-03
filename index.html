@@ -20,51 +20,57 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 24px;
-      overflow: hidden;
+      padding: 18px;
+      overflow-x: hidden;
       touch-action: manipulation;
     }
 
     .card {
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       background: white;
       border-radius: 28px;
-      padding: 28px 22px;
+      padding: 24px 18px;
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
       text-align: center;
       position: relative;
-      min-height: 360px;
+      min-height: 380px;
     }
 
     h1 {
-      font-size: 1.7rem;
+      font-size: clamp(1.18rem, 5vw, 1.55rem);
+      line-height: 1.25;
       margin: 0 0 14px;
     }
 
     p {
-      margin: 0 0 24px;
+      margin: 0 0 20px;
       color: #555;
-      font-size: 1rem;
+      font-size: clamp(0.95rem, 4vw, 1rem);
+      line-height: 1.45;
     }
 
     .buttons {
       position: relative;
-      min-height: 170px;
+      min-height: 190px;
       width: 100%;
+      overflow: hidden;
     }
 
     button {
       border: none;
       border-radius: 999px;
-      padding: 16px 24px;
-      font-size: 1.05rem;
+      padding: 14px 18px;
+      font-size: clamp(0.88rem, 3.8vw, 1rem);
+      line-height: 1.15;
       font-weight: 700;
       cursor: pointer;
-      min-width: 130px;
-      min-height: 56px;
+      min-width: 112px;
+      max-width: 190px;
+      min-height: 54px;
       transition: transform 0.18s ease, left 0.18s ease, top 0.18s ease;
       user-select: none;
+      white-space: normal;
     }
 
     .good {
@@ -72,8 +78,8 @@
       color: white;
       position: absolute;
       left: 50%;
-      top: 95px;
-      transform: translateX(-50%);
+      top: 108px;
+      transform: translateX(-50%) scale(1);
     }
 
     .runaway {
@@ -81,18 +87,14 @@
       color: white;
       position: absolute;
       left: 50%;
-      top: 18px;
-      transform: translateX(-50%);
-    }
-
-    .runaway.moved {
-      transform: translateX(0);
+      top: 20px;
+      transform: translateX(-50%) scale(1);
     }
 
     .progress {
       font-size: 0.85rem;
       color: #777;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .final {
@@ -105,6 +107,63 @@
 
     .hidden {
       display: none;
+    }
+
+    .video-frame {
+      width: 100%;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #111;
+      margin-bottom: 18px;
+    }
+
+    .video-frame video {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 56vh;
+      object-fit: cover;
+    }
+
+    .quote {
+      margin: 0;
+      padding: 18px 16px;
+      border-radius: 20px;
+      background: #f6f6f6;
+      color: #222;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1rem, 4.2vw, 1.18rem);
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .quote p {
+      color: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      margin: 0 0 12px;
+    }
+
+    .quote p:last-child {
+      margin-bottom: 0;
+    }
+
+    .quote .credit {
+      margin-top: 18px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.78rem;
+      color: #666;
+    }
+
+    @media (max-width: 380px) {
+      .card {
+        padding: 22px 14px;
+      }
+
+      button {
+        min-width: 104px;
+        padding: 13px 15px;
+      }
     }
   </style>
 </head>
@@ -124,32 +183,44 @@
     </section>
 
     <section class="final" id="final">
-      <h1>Fin 😄</h1>
-      <p>Has llegado al final de la broma.</p>
+      <div class="video-frame">
+        <video id="finalVideo" src="20260501_125417.mp4" autoplay muted loop playsinline></video>
+      </div>
+
+      <div class="quote">
+        <p>Cuando eliges pareja, también eliges rutinas.</p>
+        <p>Eliges si se madruga o se trasnocha, si se vive con calma o con ansiedad, eliges si se conversa o se evade.</p>
+        <p>El amor no es solo conexión, es compartir valores, ritmo y visión. Es elegirse cada día, incluso cuando la magia ya no alcanza.</p>
+        <p class="credit">@escritohcam</p>
+      </div>
+
+      <audio id="jazzAudio" src="jazz.mp3" loop preload="auto"></audio>
     </section>
   </main>
 
   <script>
     const questions = [
       {
-        text: "¿Me invitas un café?",
-        good: "Sí",
-        runaway: "No"
+        text: "Hola Ali. Mujer fantástica, increíble, hermosa, única e incomprensible… ¿seguimos con el proyecto?",
+        good: "No",
+        runaway: "Sí"
       },
       {
-        text: "¿También pagas el postre?",
-        good: "Claro",
-        runaway: "Ni de broma"
+        text: "Pero, ¿por qué no? Somos capaces, podemos lograrlo. ¿De verdad ya no quieres intentarlo?",
+        good: "Ni de broma",
+        runaway: "Claro, hagámoslo!"
       },
       {
-        text: "¿Aceptas que esta página te ganó?",
-        good: "Acepto",
-        runaway: "Jamás"
+        text: "No dudes que te pienso y te veo como una mujer increíble, aunque no siempre te entiendo. Serás siempre mi amiga, ¿verdad?",
+        good: "Claro!",
+        runaway: "No sé de qué hablas"
       }
     ];
 
     let current = 0;
-	let runawayScale = 1;
+    let runawayScale = 1;
+    let goodThirdAttempts = 0;
+    let blockNextGoodClick = false;
 
     const questionEl = document.getElementById("question");
     const subtitleEl = document.getElementById("subtitle");
@@ -159,6 +230,8 @@
     const buttonArea = document.getElementById("buttonArea");
     const game = document.getElementById("game");
     const final = document.getElementById("final");
+    const finalVideo = document.getElementById("finalVideo");
+    const jazzAudio = document.getElementById("jazzAudio");
 
     function renderQuestion() {
       const q = questions[current];
@@ -167,93 +240,151 @@
       goodBtn.textContent = q.good;
       runawayBtn.textContent = q.runaway;
       progressEl.textContent = `Pregunta ${current + 1} de ${questions.length}`;
-	  
-	  runawayScale = 1;
-	  runawayBtn.classList.remove("moved");
-	  runawayBtn.style.left = "50%";
-	  runawayBtn.style.top = "18px";
-	  runawayBtn.style.transform = "translateX(-50%) scale(1)";
+
+      runawayScale = 1;
+      goodThirdAttempts = 0;
+      blockNextGoodClick = false;
+
+      resetButton(runawayBtn, "50%", "20px", "translateX(-50%) scale(1)");
+      resetButton(goodBtn, "50%", "108px", "translateX(-50%) scale(1)");
     }
 
-    function moveRunawayButton(event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  // Reducir el tamaño 5% por cada intento
-  runawayScale = runawayScale * 0.95;
-
-  const areaRect = buttonArea.getBoundingClientRect();
-  const btnRect = runawayBtn.getBoundingClientRect();
-
-  const maxX = Math.max(0, areaRect.width - btnRect.width);
-  const maxY = Math.max(0, areaRect.height - btnRect.height);
-
-  // Coordenadas del toque o clic
-  let clickX = areaRect.width / 2;
-  let clickY = areaRect.height / 2;
-
-  if (event) {
-    if (event.touches && event.touches.length > 0) {
-      clickX = event.touches[0].clientX - areaRect.left;
-      clickY = event.touches[0].clientY - areaRect.top;
-    } else {
-      clickX = event.clientX - areaRect.left;
-      clickY = event.clientY - areaRect.top;
+    function resetButton(button, left, top, transform) {
+      button.style.left = left;
+      button.style.top = top;
+      button.style.transform = transform;
     }
-  }
 
-  // Distancia mínima desde donde la persona tocó
-  const minDistance = 120;
+    function getEventPoint(event, areaRect) {
+      if (!event) {
+        return {
+          x: areaRect.width / 2,
+          y: areaRect.height / 2
+        };
+      }
 
-  let randomX = 0;
-  let randomY = 0;
+      const source = event.touches && event.touches.length > 0
+        ? event.touches[0]
+        : event;
 
-  // Intentar encontrar una posición más alejada del toque
-  for (let i = 0; i < 30; i++) {
-    randomX = Math.floor(Math.random() * maxX);
-    randomY = Math.floor(Math.random() * maxY);
-
-    const buttonCenterX = randomX + btnRect.width / 2;
-    const buttonCenterY = randomY + btnRect.height / 2;
-
-    const distance = Math.hypot(buttonCenterX - clickX, buttonCenterY - clickY);
-
-    if (distance >= minDistance) {
-      break;
+      return {
+        x: source.clientX - areaRect.left,
+        y: source.clientY - areaRect.top
+      };
     }
-  }
 
-  runawayBtn.classList.add("moved");
-  runawayBtn.style.left = `${randomX}px`;
-  runawayBtn.style.top = `${randomY}px`;
-  runawayBtn.style.transform = `translateX(0) scale(${runawayScale})`;
-}
+    function moveButtonAway(button, event, scale = 1, minDistance = 145) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      const areaRect = buttonArea.getBoundingClientRect();
+      const btnRect = button.getBoundingClientRect();
+      const point = getEventPoint(event, areaRect);
+
+      const maxX = Math.max(0, areaRect.width - btnRect.width);
+      const maxY = Math.max(0, areaRect.height - btnRect.height);
+
+      let bestX = 0;
+      let bestY = 0;
+      let bestDistance = -1;
+
+      for (let i = 0; i < 45; i++) {
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+        const centerX = randomX + btnRect.width / 2;
+        const centerY = randomY + btnRect.height / 2;
+        const distance = Math.hypot(centerX - point.x, centerY - point.y);
+
+        if (distance > bestDistance) {
+          bestDistance = distance;
+          bestX = randomX;
+          bestY = randomY;
+        }
+
+        if (distance >= minDistance) {
+          break;
+        }
+      }
+
+      button.style.left = `${bestX}px`;
+      button.style.top = `${bestY}px`;
+      button.style.transform = `translateX(0) scale(${scale})`;
+    }
+
+    function handleRunawayAttempt(event) {
+      runawayScale = runawayScale * 0.95;
+      moveButtonAway(runawayBtn, event, runawayScale, 145);
+    }
+
+    function handleGoodAvoidance(event) {
+      const isThirdQuestion = current === 2;
+      const shouldMoveGood = isThirdQuestion && goodThirdAttempts < 2;
+
+      if (!shouldMoveGood) {
+        return;
+      }
+
+      goodThirdAttempts++;
+      blockNextGoodClick = true;
+      moveButtonAway(goodBtn, event, 1, 135);
+
+      if (goodThirdAttempts === 2) {
+        goodBtn.textContent = "Si, pero se me distraigo ràpido";
+      }
+    }
+
+    function handleGoodClick(event) {
+      if (blockNextGoodClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        blockNextGoodClick = false;
+        return;
+      }
+
+      nextQuestion();
+    }
 
     function nextQuestion() {
       current++;
 
       if (current >= questions.length) {
-        game.classList.add("hidden");
-        final.classList.add("show");
+        showFinal();
         return;
       }
 
       renderQuestion();
     }
 
-    // Para computadora
-    runawayBtn.addEventListener("mouseenter", moveRunawayButton);
+    function showFinal() {
+      game.classList.add("hidden");
+      final.classList.add("show");
 
-    // Para iPhone / celular: se mueve al iniciar el toque, antes del click
-    runawayBtn.addEventListener("pointerdown", moveRunawayButton);
-    runawayBtn.addEventListener("touchstart", moveRunawayButton, { passive: false });
+      finalVideo.muted = true;
+      finalVideo.play().catch(() => {});
 
-    // Por si aun así ocurre un click accidental
-    runawayBtn.addEventListener("click", moveRunawayButton);
+      // Sube un archivo llamado jazz.mp3 al repositorio si quieres música.
+      // En celular, el audio puede iniciar porque la persona ya interactuó con la página.
+      jazzAudio.volume = 0.35;
+      jazzAudio.play().catch(() => {});
+    }
 
-    goodBtn.addEventListener("click", nextQuestion);
+    // Computadora
+    runawayBtn.addEventListener("mouseenter", handleRunawayAttempt);
+    goodBtn.addEventListener("mouseenter", handleGoodAvoidance);
+
+    // Celular/iPhone: se activa al iniciar el toque, antes del click.
+    if (window.PointerEvent) {
+      runawayBtn.addEventListener("pointerdown", handleRunawayAttempt);
+      goodBtn.addEventListener("pointerdown", handleGoodAvoidance);
+    } else {
+      runawayBtn.addEventListener("touchstart", handleRunawayAttempt, { passive: false });
+      goodBtn.addEventListener("touchstart", handleGoodAvoidance, { passive: false });
+    }
+
+    runawayBtn.addEventListener("click", handleRunawayAttempt);
+    goodBtn.addEventListener("click", handleGoodClick);
 
     renderQuestion();
   </script>
