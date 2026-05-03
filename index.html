@@ -138,6 +138,15 @@
       display: none;
     }
 
+    .restart-button {
+      position: static;
+      display: block;
+      margin: 18px auto 0;
+      max-width: 260px;
+      background: #111;
+      color: white;
+    }
+
     .quote {
       margin: 0;
       padding: 18px 16px;
@@ -206,15 +215,17 @@
         <p>Cuando eliges pareja, también eliges rutinas.</p>
         <p>Eliges si se madruga o se trasnocha, si se vive con calma o con ansiedad, eliges si se conversa o se evade.</p>
         <p>El amor no es solo conexión, es compartir valores, ritmo y visión. Es elegirse cada día, incluso cuando la magia ya no alcanza.</p>
-        <p class="credit">@escritohcam</p>
+        <p>Salida de fin de semana. Viendo el paisaje y movimiento del viento, pensé en ti, como quisiera que estuvieras aquì</p>
       </div>
+
+      <button class="restart-button" id="restartBtn" type="button">Volver al inicio</button>
     </section>
   </main>
 
   <script>
     const questions = [
       {
-        text: "Hola Ali. Mujer fantástica, increíble, hermosa, única e incomprensible… ¿seguimos con el proyecto?",
+        text: "Hola Ali. Mujer fantástica, increíble, hermosa, única e ininteligible… ¿seguimos con el proyecto?",
         good: "No",
         runaway: "Sí"
       },
@@ -245,6 +256,7 @@
     const final = document.getElementById("final");
     const finalVideo = document.getElementById("finalVideo");
     const playWithSoundBtn = document.getElementById("playWithSoundBtn");
+    const restartBtn = document.getElementById("restartBtn");
 
     const finalPlaylist = [
       {
@@ -342,7 +354,7 @@
     }
 
     function handleRunawayAttempt(event) {
-      runawayScale = runawayScale * 0.95;
+      runawayScale = runawayScale * 0.80;
       moveButtonAway(runawayBtn, event, runawayScale, 145);
     }
 
@@ -392,6 +404,19 @@
       playFinalVideo(finalVideoIndex);
     }
 
+    function restartGame() {
+      finalVideo.pause();
+      finalVideo.removeAttribute("src");
+      finalVideo.load();
+      playWithSoundBtn.classList.add("hidden");
+
+      current = 0;
+      final.classList.remove("show");
+      game.classList.remove("hidden");
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function playFinalVideo(index) {
       const item = finalPlaylist[index];
 
@@ -434,6 +459,8 @@
         playWithSoundBtn.classList.remove("hidden");
       });
     });
+
+    restartBtn.addEventListener("click", restartGame);
 
     renderQuestion();
   </script>
