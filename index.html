@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Broma</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f7d9e3, #dce9ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 28px;
+      padding: 28px 22px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      position: relative;
+      min-height: 360px;
+    }
+
+    h1 {
+      font-size: 1.7rem;
+      margin: 0 0 14px;
+    }
+
+    p {
+      margin: 0 0 24px;
+      color: #555;
+      font-size: 1rem;
+    }
+
+    .buttons {
+      position: relative;
+      min-height: 170px;
+      width: 100%;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 16px 24px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 130px;
+      min-height: 56px;
+      transition: transform 0.18s ease, left 0.18s ease, top 0.18s ease;
+      user-select: none;
+    }
+
+    .good {
+      background: #111;
+      color: white;
+      position: absolute;
+      left: 50%;
+      top: 95px;
+      transform: translateX(-50%);
+    }
+
+    .runaway {
+      background: #ff4f7b;
+      color: white;
+      position: absolute;
+      left: 50%;
+      top: 18px;
+      transform: translateX(-50%);
+    }
+
+    .runaway.moved {
+      transform: translateX(0);
+    }
+
+    .progress {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 10px;
+    }
+
+    .final {
+      display: none;
+    }
+
+    .final.show {
+      display: block;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <section id="game">
+      <h1 id="question">Pregunta</h1>
+      <p id="subtitle">Elige una opción.</p>
+
+      <div class="buttons" id="buttonArea">
+        <button class="runaway" id="runawayBtn">No</button>
+        <button class="good" id="goodBtn">Sí</button>
+      </div>
+
+      <div class="progress" id="progress"></div>
+    </section>
+
+    <section class="final" id="final">
+      <h1>Fin 😄</h1>
+      <p>Has llegado al final de la broma.</p>
+    </section>
+  </main>
+
+  <script>
+    const questions = [
+      {
+        text: "¿Me invitas un café?",
+        good: "Sí",
+        runaway: "No"
+      },
+      {
+        text: "¿También pagas el postre?",
+        good: "Claro",
+        runaway: "Ni de broma"
+      },
+      {
+        text: "¿Aceptas que esta página te ganó?",
+        good: "Acepto",
+        runaway: "Jamás"
+      }
+    ];
+
+    let current = 0;
+
+    const questionEl = document.getElementById("question");
+    const subtitleEl = document.getElementById("subtitle");
+    const progressEl = document.getElementById("progress");
+    const runawayBtn = document.getElementById("runawayBtn");
+    const goodBtn = document.getElementById("goodBtn");
+    const buttonArea = document.getElementById("buttonArea");
+    const game = document.getElementById("game");
+    const final = document.getElementById("final");
+
+    function renderQuestion() {
+      const q = questions[current];
+
+      questionEl.textContent = q.text;
+      goodBtn.textContent = q.good;
+      runawayBtn.textContent = q.runaway;
+      progressEl.textContent = `Pregunta ${current + 1} de ${questions.length}`;
+
+      runawayBtn.classList.remove("moved");
+      runawayBtn.style.left = "50%";
+      runawayBtn.style.top = "18px";
+      runawayBtn.style.transform = "translateX(-50%)";
+    }
+
+    function moveRunawayButton(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      const areaRect = buttonArea.getBoundingClientRect();
+      const btnRect = runawayBtn.getBoundingClientRect();
+
+      const maxX = Math.max(0, areaRect.width - btnRect.width);
+      const maxY = Math.max(0, areaRect.height - btnRect.height);
+
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      runawayBtn.classList.add("moved");
+      runawayBtn.style.left = `${randomX}px`;
+      runawayBtn.style.top = `${randomY}px`;
+      runawayBtn.style.transform = "translateX(0)";
+    }
+
+    function nextQuestion() {
+      current++;
+
+      if (current >= questions.length) {
+        game.classList.add("hidden");
+        final.classList.add("show");
+        return;
+      }
+
+      renderQuestion();
+    }
+
+    // Para computadora
+    runawayBtn.addEventListener("mouseenter", moveRunawayButton);
+
+    // Para iPhone / celular: se mueve al iniciar el toque, antes del click
+    runawayBtn.addEventListener("pointerdown", moveRunawayButton);
+    runawayBtn.addEventListener("touchstart", moveRunawayButton, { passive: false });
+
+    // Por si aun así ocurre un click accidental
+    runawayBtn.addEventListener("click", moveRunawayButton);
+
+    goodBtn.addEventListener("click", nextQuestion);
+
+    renderQuestion();
+  </script>
+</body>
+</html>
