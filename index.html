@@ -169,69 +169,67 @@
       progressEl.textContent = `Pregunta ${current + 1} de ${questions.length}`;
 	  
 	  runawayScale = 1;
-
-      runawayBtn.classList.remove("moved");
-      runawayBtn.style.left = "50%";
-      runawayBtn.style.top = "18px";
-      runawayBtn.style.transform = "translateX(-50%) scale(1)";
+	  runawayBtn.classList.remove("moved");
+	  runawayBtn.style.left = "50%";
+	  runawayBtn.style.top = "18px";
+	  runawayBtn.style.transform = "translateX(-50%) scale(1)";
     }
 
     function moveRunawayButton(event) {
-      if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-	  
-	  // Reducir el tamaño 5% por cada intento
-	  runawayScale = runawayScale * 0.95;
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
-      const areaRect = buttonArea.getBoundingClientRect();
-      const btnRect = runawayBtn.getBoundingClientRect();
+  // Reducir el tamaño 5% por cada intento
+  runawayScale = runawayScale * 0.95;
 
-      const maxX = Math.max(0, areaRect.width - btnRect.width);
-      const maxY = Math.max(0, areaRect.height - btnRect.height);
+  const areaRect = buttonArea.getBoundingClientRect();
+  const btnRect = runawayBtn.getBoundingClientRect();
 
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
-	  // Coordenadas del toque o clic
-	  let clickX = areaRect.width / 2;
-	  let clickY = areaRect.height / 2;
+  const maxX = Math.max(0, areaRect.width - btnRect.width);
+  const maxY = Math.max(0, areaRect.height - btnRect.height);
 
-	  if (event) {
-		if (event.touches && event.touches.length > 0) {
-		  clickX = event.touches[0].clientX - areaRect.left;
-		  clickY = event.touches[0].clientY - areaRect.top;
-		} else {
-		  clickX = event.clientX - areaRect.left;
-		  clickY = event.clientY - areaRect.top;
-		}
-	  }
+  // Coordenadas del toque o clic
+  let clickX = areaRect.width / 2;
+  let clickY = areaRect.height / 2;
 
-	  // Distancia mínima desde donde la persona tocó
-	  const minDistance = 120;
+  if (event) {
+    if (event.touches && event.touches.length > 0) {
+      clickX = event.touches[0].clientX - areaRect.left;
+      clickY = event.touches[0].clientY - areaRect.top;
+    } else {
+      clickX = event.clientX - areaRect.left;
+      clickY = event.clientY - areaRect.top;
+    }
+  }
 
-	  let randomX = 0;
-	  let randomY = 0;
+  // Distancia mínima desde donde la persona tocó
+  const minDistance = 120;
 
-	  // Intentar encontrar una posición más alejada del toque
-	  for (let i = 0; i < 30; i++) {
-		randomX = Math.floor(Math.random() * maxX);
-		randomY = Math.floor(Math.random() * maxY);
+  let randomX = 0;
+  let randomY = 0;
 
-		const buttonCenterX = randomX + btnRect.width / 2;
-		const buttonCenterY = randomY + btnRect.height / 2;
+  // Intentar encontrar una posición más alejada del toque
+  for (let i = 0; i < 30; i++) {
+    randomX = Math.floor(Math.random() * maxX);
+    randomY = Math.floor(Math.random() * maxY);
 
-		const distance = Math.hypot(buttonCenterX - clickX, buttonCenterY - clickY);
+    const buttonCenterX = randomX + btnRect.width / 2;
+    const buttonCenterY = randomY + btnRect.height / 2;
 
-		if (distance >= minDistance) {
-		  break;
-		}
-	  }
-	  runawayBtn.classList.add("moved");
-	  runawayBtn.style.left = `${randomX}px`;
-	  runawayBtn.style.top = `${randomY}px`;
-	  runawayBtn.style.transform = `translateX(0) scale(${runawayScale})`;
-	}
+    const distance = Math.hypot(buttonCenterX - clickX, buttonCenterY - clickY);
+
+    if (distance >= minDistance) {
+      break;
+    }
+  }
+
+  runawayBtn.classList.add("moved");
+  runawayBtn.style.left = `${randomX}px`;
+  runawayBtn.style.top = `${randomY}px`;
+  runawayBtn.style.transform = `translateX(0) scale(${runawayScale})`;
+}
 
     function nextQuestion() {
       current++;
