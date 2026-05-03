@@ -207,9 +207,10 @@
     <section class="final" id="final">
       <div class="video-frame">
         <video id="finalVideo" playsinline preload="auto"></video>
+        <audio id="jazzAudio" src="jazz.mp3" loop preload="auto"></audio>
       </div>
 
-      <button class="sound-button hidden" id="playWithSoundBtn" type="button">Reproducir con sonido</button>
+      <button class="sound-button hidden" id="playWithSoundBtn" type="button">Activar sonido</button>
 
       <div class="quote">
         <p>Cuando eliges pareja, también eliges rutinas.</p>
@@ -225,7 +226,7 @@
   <script>
     const questions = [
       {
-        text: "Hola Ali. Mujer fantástica, increíble, hermosa, única e ininteligible… ¿seguimos con el proyecto?",
+        text: "Hola Ali. Mujer fantástica, increíble, hermosa, única e incomprensible… ¿seguimos con el proyecto?",
         good: "No",
         runaway: "Sí"
       },
@@ -255,6 +256,7 @@
     const game = document.getElementById("game");
     const final = document.getElementById("final");
     const finalVideo = document.getElementById("finalVideo");
+    const jazzAudio = document.getElementById("jazzAudio");
     const playWithSoundBtn = document.getElementById("playWithSoundBtn");
     const restartBtn = document.getElementById("restartBtn");
 
@@ -262,12 +264,14 @@
       {
         src: "20260501_125417.mp4",
         muted: true,
-        playbackRate: 0.5
+        playbackRate: 0.25,
+        musicVolume: 0.75
       },
       {
         src: "20260501_124829.mp4",
         muted: false,
-        playbackRate: 1
+        playbackRate: 1,
+        musicVolume: 0.2
       }
     ];
 
@@ -354,7 +358,7 @@
     }
 
     function handleRunawayAttempt(event) {
-      runawayScale = runawayScale * 0.70;
+      runawayScale = runawayScale * 0.95;
       moveButtonAway(runawayBtn, event, runawayScale, 145);
     }
 
@@ -408,6 +412,9 @@
       finalVideo.pause();
       finalVideo.removeAttribute("src");
       finalVideo.load();
+
+      jazzAudio.pause();
+      jazzAudio.currentTime = 0;
       playWithSoundBtn.classList.add("hidden");
 
       current = 0;
@@ -421,14 +428,25 @@
       const item = finalPlaylist[index];
 
       playWithSoundBtn.classList.add("hidden");
+
+      jazzAudio.volume = item.musicVolume;
+
       finalVideo.src = item.src;
       finalVideo.muted = item.muted;
       finalVideo.defaultMuted = item.muted;
+      finalVideo.volume = 1;
       finalVideo.playbackRate = item.playbackRate;
       finalVideo.load();
 
-      finalVideo.play().catch(() => {
-        playWithSoundBtn.classList.remove("hidden");
+      const videoPromise = finalVideo.play();
+      const audioPromise = jazzAudio.play();
+
+      Promise.allSettled([videoPromise, audioPromise]).then((results) => {
+        const blocked = results.some((result) => result.status === "rejected");
+
+        if (blocked) {
+          playWithSoundBtn.classList.remove("hidden");
+        }
       });
     }
 
@@ -455,8 +473,19 @@
 
     playWithSoundBtn.addEventListener("click", () => {
       playWithSoundBtn.classList.add("hidden");
-      finalVideo.play().catch(() => {
-        playWithSoundBtn.classList.remove("hidden");
+
+      const item = finalPlaylist[finalVideoIndex];
+      jazzAudio.volume = item.musicVolume;
+
+      const videoPromise = finalVideo.play();
+      const audioPromise = jazzAudio.play();
+
+      Promise.allSettled([videoPromise, audioPromise]).then((results) => {
+        const blocked = results.some((result) => result.status === "rejected");
+
+        if (blocked) {
+          playWithSoundBtn.classList.remove("hidden");
+        }
       });
     });
 
