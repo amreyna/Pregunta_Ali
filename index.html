@@ -191,7 +191,7 @@
         <p>Cuando eliges pareja, también eliges rutinas.</p>
         <p>Eliges si se madruga o se trasnocha, si se vive con calma o con ansiedad, eliges si se conversa o se evade.</p>
         <p>El amor no es solo conexión, es compartir valores, ritmo y visión. Es elegirse cada día, incluso cuando la magia ya no alcanza.</p>
-        <p class="credit">@escritohcam</p>
+        <p> Salida de este fin. En esa vista, el movimiento del viento, el lugar, la zona... hubiera querido que estuvieras ahì.</p>
       </div>
 
       <audio id="jazzAudio" src="jazz.mp3" loop preload="auto"></audio>
@@ -201,7 +201,7 @@
   <script>
     const questions = [
       {
-        text: "Hola Ali. Mujer fantástica, increíble, hermosa, única e incomprensible… ¿seguimos con el proyecto?",
+        text: "Hola Ali. Mujer fantástica, increíble, hermosa, única e ininteligible… ¿seguimos con el proyecto?",
         good: "No",
         runaway: "Sí"
       },
@@ -314,7 +314,7 @@
     }
 
     function handleRunawayAttempt(event) {
-      runawayScale = runawayScale * 0.95;
+      runawayScale = runawayScale * 0.85;
       moveButtonAway(runawayBtn, event, runawayScale, 145);
     }
 
@@ -366,7 +366,7 @@
 
       // Sube un archivo llamado jazz.mp3 al repositorio si quieres música.
       // En celular, el audio puede iniciar porque la persona ya interactuó con la página.
-      jazzAudio.volume = 0.35;
+      jazzAudio.volume = 0.85;
       jazzAudio.play().catch(() => {});
     }
 
