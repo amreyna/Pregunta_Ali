@@ -264,7 +264,7 @@
       {
         src: "20260501_125417.mp4",
         muted: true,
-        playbackRate: 0.25,
+        playbackRate: 0.10,
         musicVolume: 0.75
       },
       {
@@ -275,7 +275,8 @@
       }
     ];
 
-    let finalVideoIndex = 0;
+	let finalVideoIndex = 0;
+	let secondFinalVideoAlreadyPlayed = false;
 
     function renderQuestion() {
       const q = questions[current];
@@ -358,7 +359,7 @@
     }
 
     function handleRunawayAttempt(event) {
-      runawayScale = runawayScale * 0.75;
+      runawayScale = runawayScale * 0.7;
       moveButtonAway(runawayBtn, event, runawayScale, 145);
     }
 
@@ -405,6 +406,7 @@
       game.classList.add("hidden");
       final.classList.add("show");
       finalVideoIndex = 0;
+	  secondFinalVideoAlreadyPlayed = false;
       playFinalVideo(finalVideoIndex);
     }
 
@@ -415,6 +417,7 @@
 
       jazzAudio.pause();
       jazzAudio.currentTime = 0;
+	  secondFinalVideoAlreadyPlayed = false;
       playWithSoundBtn.classList.add("hidden");
 
       current = 0;
@@ -467,9 +470,20 @@
     goodBtn.addEventListener("click", handleGoodClick);
 
     finalVideo.addEventListener("ended", () => {
-      finalVideoIndex = (finalVideoIndex + 1) % finalPlaylist.length;
-      playFinalVideo(finalVideoIndex);
-    });
+	// Secuencia final:
+	// 1) Reproduce el primer video.
+	// 2) Reproduce el segundo video una sola vez.
+	// 3) Regresa al primer video y solo ese se repite en bucle.
+	  if (finalVideoIndex === 0 && !secondFinalVideoAlreadyPlayed) {
+		finalVideoIndex = 1;
+		secondFinalVideoAlreadyPlayed = true;
+	  } else {
+		finalVideoIndex = 0;
+	  }
+
+	  playFinalVideo(finalVideoIndex);
+	});
+
 
     playWithSoundBtn.addEventListener("click", () => {
       playWithSoundBtn.classList.add("hidden");
