@@ -364,7 +364,7 @@
 
     function handleGoodAvoidance(event) {
       const isThirdQuestion = current === 2;
-      const shouldMoveGood = isThirdQuestion && goodThirdAttempts < 2;
+      const shouldMoveGood = isThirdQuestion && goodThirdAttempts < 1;
 
       if (!shouldMoveGood) {
         return;
